@@ -28,6 +28,11 @@
  *
  */
 class Oara_Network_Publisher_Amazon extends Oara_Network {
+        /**
+         * The network to use if none is specified
+         */
+        const NETWORK = 'us';
+        
 	/**
 	 * Export Merchants Parameters
 	 * @var array
@@ -70,6 +75,16 @@ class Oara_Network_Publisher_Amazon extends Oara_Network {
 	 * @return Oara_Network_Publisher_Amazon
 	 */
 	public function __construct($credentials) {
+            
+                /*
+                 * If the network was specified in the credentials file, we'll use
+                 * that; otherwise, we'll use the value from the network constant.
+                 * Note the use of 'static' which allows us to override the network
+                 * constant in subclasses
+                 */
+                if (empty($credentials['network'])) {
+                    $credentials['network'] = static::NETWORK;
+                }
 		$this->_credentials = $credentials;
 
 		self::logIn();
